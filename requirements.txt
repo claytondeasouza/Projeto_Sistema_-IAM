@@ -1,0 +1,5 @@
+Flask
+Flask-Login
+openpyxl
+Flask-SQLAlchemy  # Adicionar
+psycopg2-binary   # Adicionar (driver para PostgreSQL)
