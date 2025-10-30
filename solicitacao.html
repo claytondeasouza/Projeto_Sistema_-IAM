@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- O conteúdo da página começa aqui. Tudo acima é herdado do base.html -->
+<div class="container py-4">
+    <form class="bg-white p-4 shadow rounded needs-validation" novalidate id="accessForm" action="{{ url_for('solicitacao') }}" method="post">
+      <h1 class="text-center mb-3 main-title">Gestão de Acessos e Identidade - IAM</h1>
+      <h2 class="text-center mb-3 main-title">Formulário de Controle de Acessos</h2>
+      <h3 class="text-center text-secondary mb-4">Liberação / Alteração / Remoção</h3>
+
+      <!-- Seção 1: Informações do Colaborador -->
+      <section class="mb-5">
+        <h4 class="text-secondary mb-3">1. Informações do Colaborador</h4>
+        <div class="row g-3">
+            <!-- Coluna Esquerda -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label" for="nome_completo">Nome completo</label>
+                    <input type="text" class="form-control" id="nome_completo" name="nome_completo" required>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="cargo">Cargo</label>
+                    <input type="text" class="form-control" id="cargo" name="cargo" required>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="usuario_espelho">Usuário Espelho (para criação de perfil)</label>
+                    <input type="text" class="form-control" id="usuario_espelho" name="usuario_espelho">
+                </div>
+                 <div class="mb-3">
+                    <label class="form-label" for="data_solicitacao">Data da solicitação</label>
+                    <input type="date" class="form-control" id="data_solicitacao" name="data_solicitacao" required>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+            </div>
+            <!-- Coluna Direita -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label" for="matricula">Matrícula/ID</label>
+                    <input type="text" class="form-control" id="matricula" name="matricula" required>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="departamento">Departamento</label>
+                    <select class="form-select" id="departamento" name="departamento" required>
+                      <option value="">Selecione...</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Financeiro">Financeiro</option>
+                      <option value="Comercial">Comercial</option>
+                      <option value="Recursos Humanos">RH People & Culture</option>
+                      <option value="Juridico">Juridico</option>
+                      <option value="ServiceDesk">ServiceDesk</option>
+                      <option value="IA">IA</option>
+                      <option value="Desenvolvimento">Desenvolvimento</option>
+                      <option value="Windows">Windows</option>
+                      <option value="Linux">Linux</option>
+                      <option value="Cloud">Cloud</option>
+                      <option value="Banco de Dados">Banco de Dados</option>
+                    </select>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="gestor">Gestor imediato (Interno)</label>
+                    <input type="text" class="form-control" id="gestor" name="gestor" required>
+                    <div class="invalid-feedback">Campo obrigatório.</div>
+                </div>
+                <div class="mb-3 d-none" id="campo-demissao">
+                    <label class="form-label" for="data_demissao">Data de Desligamento</label>
+                    <input type="date" class="form-control" id="data_demissao" name="data_demissao">
+                </div>
+            </div>
+        </div>
+        <!-- Linha completa para Tipo de Vínculo e Solicitação -->
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Tipo de Vínculo</label>
+                <div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tipo_vinculo" id="vinculo_interno" value="Interno" checked>
+                    <label class="form-check-label" for="vinculo_interno">Interno</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tipo_vinculo" id="vinculo_terceirizado" value="Terceirizado">
+                    <label class="form-check-label" for="vinculo_terceirizado">Terceirizado</label>
+                  </div>
+                </div>
+            </div>
+             <div class="col-12 row g-3 d-none ms-1" id="campos-terceirizado">
+                <div class="col-md-6">
+                  <label class="form-label" for="nome_consultoria">Nome da Consultoria/Empresa Parceira</label>
+                  <input type="text" class="form-control" id="nome_consultoria" name="nome_consultoria">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="gestor_consultoria">Gestor direto (terceirizado)</label>
+                  <input type="text" class="form-control" id="gestor_consultoria" name="gestor_consultoria">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="email_gestor_consultoria">E-mail Gestor direto (terceirizado)</label>
+                  <input type="email" class="form-control" id="email_gestor_consultoria" name="email_gestor_consultoria">
+                </div>
+              
+              <div class="col-md-6">
+                  <label class="form-label" for="telefone_gestor_consultoria">Telefone Gestor direto (terceirizado)</label>
+                  <input type="tel" class="form-control" id="telefone_gestor_consultoria" name="telefone_gestor_consultoria">
+                </div>
+             </div>
+        <div class="mt-4">
+            <label class="form-label">Tipo de solicitação</label>
+            <div>
+                <!-- ... inputs de tipo de solicitação ... -->
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input tipo-solicitacao" type="radio" value="Contratação" id="contratacao" name="tipo_solicitacao" required>
+                  <label class="form-check-label" for="contratacao">Contratação</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input tipo-solicitacao" type="radio" value="Promoção" id="promocao" name="tipo_solicitacao">
+                  <label class="form-check-label" for="promocao">Promoção</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input tipo-solicitacao" type="radio" value="Mudança de departamento" id="mudanca" name="tipo_solicitacao">
+                  <label class="form-check-label" for="mudanca">Mudança de departamento</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input tipo-solicitacao" type="radio" value="Alteração de perfil" id="alteracao" name="tipo_solicitacao">
+                  <label class="form-check-label" for="alteracao">Alteração de perfil</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input tipo-solicitacao" type="radio" value="Desligamento" id="desligamento" name="tipo_solicitacao">
+                  <label class="form-check-label" for="desligamento">Desligamento</label>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- Seção 2: Acessos -->
+       <section id="secao-acessos">
+        <h4 class="text-secondary mb-3">2. Tipo de Acesso Solicitado</h4>
+        
+        <h5 class="text-primary mt-4">2.1 Tipo de Licença do Office 365</h5>
+        <div class="mb-3">
+            <label class="form-label" for="tipo_licenca">Selecione a licença a ser atribuída</label>
+            <select class="form-select" id="tipo_licenca" name="tipo_licenca">
+                <option value="">Nenhuma / Manter atual</option>
+                <option value="Business Basic">Business Basic</option>
+                <option value="Business Premium">Business Premium</option>
+                <option value="Business Advanced">Business Advanced</option>
+            </select>
+        </div>
+
+        <h5 class="text-primary mt-4">2.2 Servidores</h5>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered table-striped" id="tabela-servidores">
+            <thead class="table-primary">
+              <tr>
+                <th>Servidor</th><th>Perfil de Acesso</th><th>Ação</th><th>Observações</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" name="servidores[0][servidor]"></td>
+                <td><input type="text" class="form-control" name="servidores[0][perfil_acesso]"></td>
+                <td><input type="text" class="form-control" name="servidores[0][acao]"></td>
+                <td><input type="text" class="form-control" name="servidores[0][observacoes]"></td>
+                <td><button type="button" class="btn btn-danger btn-sm remover-linha">−</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="adicionarLinha('tabela-servidores', 'servidores')">+ Adicionar Linha</button>
+        </div>
+
+        <h5 class="text-primary mt-4">2.3 Sistemas</h5>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered table-striped" id="tabela-sistemas">
+            <thead class="table-primary">
+              <tr>
+                <th>Sistema</th><th>Perfil de Acesso</th><th>Ação</th><th>Observações</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" name="sistemas[0][sistema]"></td>
+                <td><input type="text" class="form-control" name="sistemas[0][perfil_acesso]"></td>
+                <td><input type="text" class="form-control" name="sistemas[0][acao]"></td>
+                <td><input type="text" class="form-control" name="sistemas[0][observacoes]"></td>
+                <td><button type="button" class="btn btn-danger btn-sm remover-linha">−</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="adicionarLinha('tabela-sistemas', 'sistemas')">+ Adicionar Linha</button>
+        </div>
+
+        <h5 class="text-primary mt-4">2.4 Pastas da Rede</h5>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered table-striped" id="tabela-pastas">
+            <thead class="table-primary">
+              <tr>
+                <th>Pasta</th><th>Tipo de Acesso</th><th>Ação</th><th>Observações</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" name="pastas_rede[0][pasta]"></td>
+                <td><input type="text" class="form-control" name="pastas_rede[0][tipo_acesso]"></td>
+                <td><input type="text" class="form-control" name="pastas_rede[0][acao]"></td>
+                <td><input type="text" class="form-control" name="pastas_rede[0][observacoes]"></td>
+                <td><button type="button" class="btn btn-danger btn-sm remover-linha">−</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="adicionarLinha('tabela-pastas', 'pastas_rede')">+ Adicionar Linha</button>
+        </div>
+
+        <h5 class="text-primary mt-4">2.5 Softwares</h5>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered table-striped" id="tabela-softwares">
+            <thead class="table-primary">
+              <tr>
+                <th>Software</th><th>Licenciado?</th><th>Ação</th><th>Observações</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="form-control" name="softwares[0][software]"></td>
+                <td><input type="text" class="form-control" name="softwares[0][licenciado]"></td>
+                <td><input type="text" class="form-control" name="softwares[0][acao]"></td>
+                <td><input type="text" class="form-control" name="softwares[0][observacoes]"></td>
+                <td><button type="button" class="btn btn-danger btn-sm remover-linha">−</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="adicionarLinha('tabela-softwares', 'softwares')">+ Adicionar Linha</button>
+        </div>
+      </section>
+
+      <h4 class="text-secondary mb-3 mt-5">3. Equipamento Fornecido</h4>
+      <div class="table-responsive mb-4">
+        <table class="table table-bordered table-striped" id="tabela-equipamento">
+          <thead class="table-primary">
+            <tr>
+              <th>Tipo de Equipamento</th>
+              <th>Modelo</th>
+              <th>Número de Patrimônio</th>
+              <th>Sistema Operacional</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="form-control" name="equipamentos[0][tipo]"></td>
+              <td><input type="text" class="form-control" name="equipamentos[0][modelo]"></td>
+              <td><input type="text" class="form-control" name="equipamentos[0][patrimonio]"></td>
+              <td><input type="text" class="form-control" name="equipamentos[0][sistema_operacional]"></td>
+              <td><button type="button" class="btn btn-danger btn-sm remover-linha">−</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-outline-primary btn-sm" onclick="adicionarLinha('tabela-equipamento', 'equipamentos')">+ Adicionar Linha</button>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-between">
+        <button class="btn btn-success" type="submit">Gerar Relatório e Enviar</button>
+        <button class="btn btn-secondary" type="reset" onclick="setTimeout(()=>{document.querySelector('#accessForm').classList.remove('was-validated')}, 100)">Limpar Formulário</button>
+      </div>
+
+      <div class="text-center text-muted mt-4">
+        <small>Formulário interno para controle de acessos - Versão Dinâmica com Automação</small>
+      </div>
+    </form>
+  </div>
+
+<!-- O conteúdo da página termina aqui -->
+{% endblock %}
